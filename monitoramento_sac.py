@@ -1,4 +1,4 @@
-#! python3
+#!/usr/bin/env python3
 # monitoramento_sac.py - Extrai dados da página do SAC com base em uma lista
 # de ordens de serviço em uma planilha do Google Drive, atualizando em seguida
 # a própria planilha com esses dados.
@@ -233,18 +233,16 @@ def main():
 	# Abre planilha do Google Drive
 	print('Autenticando acesso à planilha do Google Drive... ', end='')
 	sys.stdout.flush()
-	#try:
-	json_key = json.load(open(r'Monitoramento do SAC-e4a30cc8c7d7.json'))
-	scope = ['https://spreadsheets.google.com/feeds']
-	credentials = SignedJwtAssertionCredentials(json_key['client_email'], bytes(json_key['private_key'], 'utf-8'), scope)
-	gc = gspread.authorize(credentials)
-	wks = gc.open_by_key('1Z7Aa0jLfrwmNbTt0uzr1NDkDzdzBBBiY96euqyqAzAk')
-	print('OK')
-	'''
+	try:
+		json_key = json.load(open(r'Monitoramento do SAC-e4a30cc8c7d7.json'))
+		scope = ['https://spreadsheets.google.com/feeds']
+		credentials = SignedJwtAssertionCredentials(json_key['client_email'], bytes(json_key['private_key'], 'utf-8'), scope)
+		gc = gspread.authorize(credentials)
+		wks = gc.open_by_key('1Z7Aa0jLfrwmNbTt0uzr1NDkDzdzBBBiY96euqyqAzAk')
+		print('OK')
 	except:
 		print('\n\nERRO: Falha no acesso ao Google Drive.')
 		sys.exit()
-'''
 
 	# Coleta valores da planilha 'Em aberto'
 	print('Checando os códigos das Ordens de Serviço a serem atualizadas... ', end='')
@@ -341,7 +339,8 @@ def main():
 			print('\n\nERRO: Falha no acesso ao Google Drive.')
 			sys.exit()
 	
-	input("\nConcluído. Tecle ENTER para fechar.")
+	wks.worksheet('LOG').append_row(['Última atualização: '+str(datetime.datetime.now())])
+	#input("\nConcluído. Tecle ENTER para fechar.")
 
 
 if __name__ == '__main__':
