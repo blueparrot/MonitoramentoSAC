@@ -1,0 +1,1 @@
+/home/pi/virtualenvs/MonitoramentoSAC/env/bin/python /home/pi/virtualenvs/MonitoramentoSAC/monitoramento_sac_linux.py
